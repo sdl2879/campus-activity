@@ -2,7 +2,7 @@ package com.campus.activity.controller;
 import com.campus.activity.common.R;
 import com.campus.activity.dto.LoginRequest;
 import com.campus.activity.dto.LoginResponse;
-import com.campus.activity.service.ISystemService;
+import com.campus.activity.service.SystemService;
 import jakarta.annotation.Resource;   // JDK17 必须用 jakarta
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +16,7 @@ public class SystemController {
 
     /* 注入业务层（接口形式，方便扩展） */
     @Resource
-    private ISystemService systemService;
+    private SystemService systemService;
 
     /**
      * 登录接口

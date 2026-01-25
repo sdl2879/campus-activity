@@ -3,7 +3,7 @@ package com.campus.activity.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.campus.activity.entity.system.User;
 import com.campus.activity.Mapper.UserMapper;
-import com.campus.activity.service.ISystemService;
+import com.campus.activity.service.SystemService;
 import com.campus.activity.utils.JwtUtil;
 import com.campus.activity. dto.LoginRequest;
 import com.campus.activity.dto.LoginResponse;
@@ -17,7 +17,7 @@ import jakarta.annotation.Resource;
  * 系统业务实现类
  */
 @Service
-public class SystemServiceImpl implements ISystemService {
+public class SystemServiceImpl implements SystemService {
 
     // 1. 注入 JwtUtil 实例（核心修复点）
     @Resource

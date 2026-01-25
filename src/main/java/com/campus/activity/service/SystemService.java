@@ -5,7 +5,7 @@ import com.campus.activity.dto.LoginResponse;
 /**
  * 系统管理业务接口
  */
-public interface ISystemService {
+public interface SystemService {
 
     /**
      * 管理端登录
