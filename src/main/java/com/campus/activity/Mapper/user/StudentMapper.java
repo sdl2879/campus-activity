@@ -1,4 +1,9 @@
 package com.campus.activity.Mapper.user;
 
-public class StudentMapper {
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.campus.activity.entity.user.Student;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface StudentMapper extends BaseMapper<Student> {
 }
