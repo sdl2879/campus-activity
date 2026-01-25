@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 修正 namespace：和接口包名完全一致（mapper 小写） -->
-<mapper namespace="com.campus.activity.Mapper.SystemMapper.UserMapper">
+<mapper namespace="com.campus.activity.Mapper.UserMapper">
 
     <!-- 根据用户名查询用户（排除已删除） -->
     <select id="selectByUsername" resultType="com.campus.activity.entity.system.User">

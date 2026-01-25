@@ -2,7 +2,7 @@ package com.campus.activity.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.campus.activity.entity.system.User;
-import com.campus.activity.Mapper.SystemMapper.UserMapper;
+import com.campus.activity.Mapper.UserMapper;
 import com.campus.activity.service.ISystemService;
 import com.campus.activity.utils.JwtUtil;
 import com.campus.activity. dto.LoginRequest;

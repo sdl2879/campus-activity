@@ -1,4 +1,4 @@
-package com.campus.activity.controller.manage;
+package com.campus.activity.controller;
 import com.campus.activity.common.R;
 import com.campus.activity.dto.LoginRequest;
 import com.campus.activity.dto.LoginResponse;

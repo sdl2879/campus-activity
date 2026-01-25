@@ -25,6 +25,21 @@ spring:
         max-idle: 8
         min-idle: 2
         max-wait: -1  # 无等待超时
+  # 文件上传配置（新增：解决upload.avatar.path解析错误）
+  servlet:
+    multipart:
+      max-file-size: 2MB        # 单个文件最大2MB（头像上传）
+      max-request-size: 10MB    # 单次请求最大10MB
+  # 静态资源映射（新增：用于访问上传的头像）
+  web:
+    resources:
+      static-locations: classpath:/static/,file:${upload.avatar.path}
+
+# 自定义文件上传配置（新增：关键，解决@Value注入失败）
+upload:
+  avatar:
+    path: D:/campus/upload/avatar/  # 本地头像存储路径（自动创建）
+    url: http://localhost:8080/api/avatar/  # 头像访问URL（匹配server.context-path）
 
 # MyBatis-Plus配置（避免映射/逻辑删除错误）
 mybatis-plus:
@@ -50,7 +65,7 @@ jwt:
 server:
   port: 8080  # 唯一端口配置，删除所有重复的port行
   servlet:
-    context-path: /api
+    context-path: /api  # 接口前缀统一为/api
 
 # 日志配置（调试用，问题解决后可关闭）
 debug: false
@@ -58,3 +73,4 @@ logging:
   level:
     com.campus.activity.mapper: debug
     org.springframework.data.redis: debug  # 便于排查Redis错误
+    org.springframework.web: info  # 减少无关日志输出

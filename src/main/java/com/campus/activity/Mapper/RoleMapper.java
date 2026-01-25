@@ -1,4 +1,4 @@
-package com.campus.activity.Mapper.SystemMapper;
+package com.campus.activity.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.campus.activity.entity.system.Role;

@@ -1,4 +1,4 @@
-package com.campus.activity.Mapper.SystemMapper;
+package com.campus.activity.Mapper;
 // 改为小写 mapper，和 XML 一致
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.campus.activity.entity.system.User;
