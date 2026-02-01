@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.user.DeptAdminMapper">
+
+    <!-- 分页多条件查询 -->
+    <select id="selectDeptAdminPage" resultType="com.campus.activity.entity.user.DeptAdmin">
+        SELECT id, username, name, dept_id, dept_name, manage_majors, phone, status, create_time
+        FROM dept_admin
+        <where>
+            <if test="query.username != null and query.username != ''">
+                AND username LIKE CONCAT('%', #{query.username}, '%')
+            </if>
+            <if test="query.name != null and query.name != ''">
+                AND name LIKE CONCAT('%', #{query.name}, '%')
+            </if>
+            <if test="query.deptId != null">
+                AND dept_id = #{query.deptId}
+            </if>
+            <if test="query.status != null">
+                AND status = #{query.status}
+            </if>
+            <if test="query.startTime != null">
+                AND create_time &gt;= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND create_time &lt;= #{query.endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 按账号查询 -->
+    <select id="selectByUsername" resultType="com.campus.activity.entity.user.DeptAdmin">
+        SELECT id, username, password, name, status
+        FROM dept_admin
+        WHERE username = #{username}
+    </select>
+
+    <!-- 按院系ID查询 -->
+    <select id="selectByDeptId" resultType="com.campus.activity.entity.user.DeptAdmin">
+        SELECT id, username, name, phone, status
+        FROM dept_admin
+        WHERE dept_id = #{deptId} AND status = 1
+    </select>
+
+</mapper>

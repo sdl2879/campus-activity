@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.sys.SysLoginLogMapper">
+
+    <!-- 分页查询登录日志 -->
+    <select id="selectLoginLogPage" resultType="com.campus.activity.entity.sys.SysLoginLog">
+        SELECT * FROM sys_login_log
+        <where>
+            <if test="query.userName != null and query.userName != ''">
+                AND user_name LIKE CONCAT('%', #{query.userName}, '%')
+            </if>
+            <if test="query.loginResult != null and query.loginResult != ''">
+                AND login_result = #{query.loginResult}
+            </if>
+            <if test="query.loginType != null and query.loginType != ''">
+                AND login_type = #{query.loginType}
+            </if>
+            <if test="query.startTime != null">
+                AND login_time &gt;= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND login_time &lt;= #{query.endTime}
+            </if>
+        </where>
+        ORDER BY login_time DESC
+    </select>
+
+    <!-- 导出登录日志 -->
+    <select id="selectLoginLogExport" resultType="com.campus.activity.entity.sys.SysLoginLog">
+        SELECT * FROM sys_login_log
+        <where>
+            <if test="query.userName != null and query.userName != ''">
+                AND user_name LIKE CONCAT('%', #{query.userName}, '%')
+            </if>
+            <if test="query.loginResult != null and query.loginResult != ''">
+                AND login_result = #{query.loginResult}
+            </if>
+            <if test="query.loginType != null and query.loginType != ''">
+                AND login_type = #{query.loginType}
+            </if>
+            <if test="query.startTime != null">
+                AND login_time &gt;= #{query.startTime}
+            </if>
+            <if test="query.endTime != null">
+                AND login_time &lt;= #{query.endTime}
+            </if>
+        </where>
+        ORDER BY login_time DESC
+    </select>
+
+</mapper>

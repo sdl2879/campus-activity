@@ -1,4 +1,5 @@
 package com.campus.activity.common;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -13,9 +14,22 @@ public class R<T> {
     private String msg;
     private T      data;
 
-    /* ===== 成功 ===== */
+    /* ===== 成功：主流命名（推荐） ===== */
+    public static <T> R<T> success() {
+        return new R<T>().setCode(200).setMsg("success");
+    }
+
     public static <T> R<T> success(T data) {
         return new R<T>().setCode(200).setMsg("success").setData(data);
+    }
+
+    /* ===== 成功：兼容常用命名 ok() ===== */
+    public static <T> R<T> ok() {
+        return success();
+    }
+
+    public static <T> R<T> ok(T data) {
+        return success(data);
     }
 
     /* ===== 失败 ===== */

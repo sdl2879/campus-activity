@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.user.StudentMapper">
+
+    <!-- 公共字段结果映射（可选，此处直接写全字段） -->
+    <!-- 注意：MyBatis-Plus 默认开启下划线转驼峰，无需 resultMap -->
+
+    <!-- 分页多条件查询学生列表 -->
+    <select id="selectStudentPage" resultType="com.campus.activity.entity.user.Student">
+        SELECT
+        id,
+        student_no,
+        username,
+        name,
+        gender,
+        dept_id,
+        dept_name,
+        major_id,
+        major_name,
+        grade,
+        class_name,
+        phone,
+        email,
+        avatar,
+        interest_tags,
+        total_score,
+        status,
+        create_time,
+        update_time,
+        last_login_time
+        FROM student
+        <where>
+            <!-- 学号：模糊查询 -->
+            <if test="query.studentNo != null and query.studentNo != ''">
+                AND student_no LIKE CONCAT('%', #{query.studentNo}, '%')
+            </if>
+
+            <!-- 姓名：模糊查询 -->
+            <if test="query.name != null and query.name != ''">
+                AND name LIKE CONCAT('%', #{query.name}, '%')
+            </if>
+
+            <!-- 院系ID：精确匹配 -->
+            <if test="query.deptId != null">
+                AND dept_id = #{query.deptId}
+            </if>
+
+            <!-- 专业ID：精确匹配 -->
+            <if test="query.majorId != null">
+                AND major_id = #{query.majorId}
+            </if>
+
+            <!-- 年级：精确匹配（如 "2023级"） -->
+            <if test="query.grade != null and query.grade != ''">
+                AND grade = #{query.grade}
+            </if>
+
+            <!-- 班级：精确匹配 -->
+            <if test="query.className != null and query.className != ''">
+                AND class_name = #{query.className}
+            </if>
+
+            <!-- 性别：0-未知, 1-男, 2-女 -->
+            <if test="query.gender != null">
+                AND gender = #{query.gender}
+            </if>
+
+            <!-- 账号状态：0-禁用, 1-启用 -->
+            <if test="query.status != null">
+                AND status = #{query.status}
+            </if>
+
+            <!-- 第二课堂最低分值 -->
+            <if test="query.minScore != null">
+                AND total_score >= #{query.minScore}
+            </if>
+
+            <!-- 第二课堂最高分值 -->
+            <if test="query.maxScore != null">
+                AND total_score &lt;= #{query.maxScore}
+            </if>
+
+            <!-- 创建时间起始 -->
+            <if test="query.startTime != null">
+                AND create_time >= #{query.startTime}
+            </if>
+
+            <!-- 创建时间结束 -->
+            <if test="query.endTime != null">
+                AND create_time &lt;= #{query.endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 按学号精确查询（用于唯一性校验、登录等） -->
+    <select id="selectByStudentNo" resultType="com.campus.activity.entity.user.Student">
+        SELECT
+            id,
+            student_no,
+            username,
+            password,
+            name,
+            gender,
+            dept_id,
+            dept_name,
+            major_id,
+            major_name,
+            grade,
+            class_name,
+            phone,
+            email,
+            avatar,
+            interest_tags,
+            total_score,
+            status,
+            create_time,
+            update_time,
+            last_login_time
+        FROM student
+        WHERE student_no = #{studentNo}
+    </select>
+
+    <!-- 按院系ID查询学生列表（可选按状态过滤） -->
+    <select id="selectByDeptId" resultType="com.campus.activity.entity.user.Student">
+        SELECT
+        id,
+        student_no,
+        name,
+        dept_name,
+        major_name,
+        grade,
+        class_name,
+        phone,
+        total_score,
+        status,
+        create_time
+        FROM student
+        WHERE dept_id = #{deptId}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 原子更新学生第二课堂总分值（并发安全） -->
+    <update id="updateTotalScore">
+        UPDATE student
+        SET
+            total_score = total_score + #{score},
+            update_time = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,21 +1,26 @@
 package com.campus.activity.entity.sys;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 /**
- * 系统基础配置实体
+ * 系统配置实体（对应sys_config表）
  */
 @Data
 @TableName("sys_config")
 public class SysConfig {
     @TableId(type = IdType.AUTO)
-    private Long id;                 // 配置ID
-    private String systemName;       // 系统名称
-    private String systemVersion;    // 系统版本
-    private String systemDomain;     // 系统域名
-    private String backupCycle;      // 备份周期（day/week/month）
-    private String enableLog;        // 是否开启日志（1是/0否）
-    private String systemDesc;       // 系统描述
+    private Long id;                // 配置ID
+    private String configKey;       // 配置键（唯一）
+    private String configValue;     // 配置值
+    private Integer configType;     // 配置类型：1-基础信息，2-安全配置，3-推荐算法
+    private BigDecimal weight;      // 推荐算法权重（仅类型3有效）
+    private String remark;          // 备注
+    private LocalDateTime createTime; // 创建时间
+    private LocalDateTime updateTime; // 更新时间
 }

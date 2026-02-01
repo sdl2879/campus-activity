@@ -45,6 +45,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+        <!-- Servlet API 依赖（仅编译时生效，不打包） -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope> <!-- 服务器已提供，避免冲突 -->
+        </dependency>
 
         <!-- ④ ORM 场景：MyBatis-Plus 简化单表 CRUD -->
         <dependency>
@@ -97,11 +104,34 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.22</version>
         </dependency>
+        <!-- EasyExcel Excel导出工具 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+        <!-- Alibaba FastJSON 依赖（用于JSON序列化/反序列化） -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version> <!-- 稳定版本，适配大部分项目 -->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <!-- 缺失的 javax.annotation 包 -->
         <!-- 提供 @Resource 注解 -->
         <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+        <!-- JWT依赖 -->
+        <!-- JWT依赖 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
         <!-- Redis 依赖 -->
         <dependency>

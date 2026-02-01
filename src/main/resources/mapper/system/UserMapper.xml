@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- 修正 namespace：和接口包名完全一致（mapper 小写） -->
-<mapper namespace="com.campus.activity.Mapper.UserMapper">
+<!-- 修复1：namespace 匹配实际 Mapper 接口路径（添加 sys 子包） -->
+<mapper namespace="com.campus.activity.mapper.sys.UserMapper">
 
     <!-- 根据用户名查询用户（排除已删除） -->
-    <select id="selectByUsername" resultType="com.campus.activity.entity.system.User">
-        SELECT id, username, password, real_name AS realName, role_id AS roleId, dept_id AS deptId, status, is_deleted AS isDeleted
+    <select id="selectByUsername" resultType="com.campus.activity.entity.sys.User">
+        SELECT
+            id,
+            username,
+            password,
+            real_name AS realName,
+            role_id AS roleId,
+            dept_id AS deptId,
+            status,
+            is_deleted AS isDeleted
         FROM sys_user
         WHERE username = #{username}
           AND is_deleted = 0

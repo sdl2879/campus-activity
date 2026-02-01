@@ -1,76 +1,83 @@
+# ===================== 服务器核心配置 =====================
+server:
+  port: 8080  # 唯一端口，避免重复配置
+ # servlet:
+  #  context-path: /api  # 全局接口前缀，所有接口都需加/api
+# ===================== Spring核心配置 =====================
 spring:
-  # 数据库配置（解决连接不稳定/中文乱码）
+  # 1. 数据库配置（解决连接不稳定/中文乱码/连接耗尽）
   datasource:
     url: jdbc:mysql://localhost:3306/campus_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # Hikari连接池（Spring Boot默认，避免连接耗尽）
+    # Hikari连接池配置（Spring Boot默认，优化性能）
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
       connection-timeout: 30000
       idle-timeout: 600000
-  # Redis配置（解决连接失败/解析异常）
-  redis:
-    host: localhost
-    port: 6379
-    password: ""  # 无密码必须显式赋值空字符串，避免解析为null
-    database: 0
-    timeout: 10000  # 连接超时10秒，避免快速超时
-    # Lettuce连接池（优化Redis连接性能）
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 2
-        max-wait: -1  # 无等待超时
-  # 文件上传配置（新增：解决upload.avatar.path解析错误）
+
+  # 2. Redis配置（适配新版本，消除弃用警告）
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ""  # 无密码显式赋值空字符串
+      database: 0
+      timeout: 10000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 2
+          max-wait: -1
+
+  # 3. 文件上传配置（限制头像大小，解决上传失败）
   servlet:
     multipart:
-      max-file-size: 2MB        # 单个文件最大2MB（头像上传）
+      max-file-size: 2MB        # 单个头像文件最大2MB
       max-request-size: 10MB    # 单次请求最大10MB
-  # 静态资源映射（新增：用于访问上传的头像）
+
+  # 4. 静态资源配置（统一管理，避免冲突）
   web:
     resources:
-      static-locations: classpath:/static/,file:${upload.avatar.path}
+      static-locations: classpath:/static/, file:${upload.avatar.path}  # 同时支持内置静态资源+本地头像文件
+      add-mappings: true
+  mvc:
+    static-path-pattern: /avatar/**  # 前端访问头像的路径（最终：/api/avatar/xxx.jpg）
 
-# 自定义文件上传配置（新增：关键，解决@Value注入失败）
+# ===================== 自定义业务配置 =====================
+# 头像上传配置（唯一定义，避免重复）
 upload:
   avatar:
-    path: D:/campus/upload/avatar/  # 本地头像存储路径（自动创建）
-    url: http://localhost:8080/api/avatar/  # 头像访问URL（匹配server.context-path）
+    path: D:/123/sdl/campus/upload/avatar/  # 本地保存路径（无多余空格）
+    url: http://localhost:8080/api/avatar/   # 前端访问前缀（匹配server.context-path）
 
-# MyBatis-Plus配置（避免映射/逻辑删除错误）
+# ===================== MyBatis-Plus配置 =====================
 mybatis-plus:
-  mapper-locations: classpath:mapper/**/*.xml  # 确保XML在resources/mapper目录下
-  type-aliases-package: com.campus.activity.entity
+  mapper-locations: classpath:mapper/**/*.xml  # Mapper XML文件路径
+  type-aliases-package: com.campus.activity.entity  # 实体类别名包
   configuration:
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: true  # 下划线转驼峰（补全缺失的冒号）
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 打印SQL便于调试
-    cache-enabled: false  # 关闭二级缓存，避免数据不一致
+    cache-enabled: false  # 关闭二级缓存
   global-config:
     db-config:
       logic-delete-field: isDeleted
       logic-delete-value: 1
       logic-not-delete-value: 0
-      id-type: auto  # 主键自增（匹配数据库表结构）
+      id-type: auto  # 主键自增
 
-# JWT配置（密钥长度足够，避免签名错误）
+# ===================== JWT配置 =====================
 jwt:
   secret: campus-activity-secret-key-32bytes-long!
   expiration: 3600
 
-# 服务器配置（仅保留1个port，解决重复键错误）
-server:
-  port: 8080  # 唯一端口配置，删除所有重复的port行
-  servlet:
-    context-path: /api  # 接口前缀统一为/api
-
-# 日志配置（调试用，问题解决后可关闭）
+# ===================== 日志配置（调试用） =====================
 debug: false
 logging:
   level:
-    com.campus.activity.mapper: debug
-    org.springframework.data.redis: debug  # 便于排查Redis错误
-    org.springframework.web: info  # 减少无关日志输出
+    com.campus.activity.mapper: debug  # 打印Mapper SQL
+    org.springframework.data.redis: debug  # Redis调试日志
+    org.springframework.web: info  # 只打印Web关键日志

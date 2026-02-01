@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.sys.SysConfigMapper">
+
+    <!-- 分页查询配置 -->
+    <select id="selectConfigPage" resultType="com.campus.activity.entity.sys.SysConfig">
+        SELECT * FROM sys_config
+        <where>
+            <if test="query.configType != null">
+                AND config_type = #{query.configType}
+            </if>
+            <if test="query.configKey != null and query.configKey != ''">
+                AND config_key LIKE CONCAT('%', #{query.configKey}, '%')
+            </if>
+        </where>
+        ORDER BY config_type ASC, create_time DESC
+    </select>
+
+    <!-- 按类型查询配置 -->
+    <select id="selectByConfigType" resultType="com.campus.activity.entity.sys.SysConfig">
+        SELECT * FROM sys_config WHERE config_type = #{configType}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 按配置键查询 -->
+    <select id="selectByConfigKey" resultType="com.campus.activity.entity.sys.SysConfig">
+        SELECT * FROM sys_config WHERE config_key = #{configKey}
+    </select>
+
+</mapper>
